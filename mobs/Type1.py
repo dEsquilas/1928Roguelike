@@ -21,6 +21,7 @@ class Type1(arcade.Sprite):
 
         self.health = 100
         self.speed = 5
+        self.attack_dmg = 10
 
     def update(self):
 

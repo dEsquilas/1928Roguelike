@@ -16,6 +16,7 @@ class Player(arcade.Sprite):
 
         self.is_attacking = False
         self.last_attack_time = 0
+        self.last_damage_time = 0
 
         self.direction = D_UP
 

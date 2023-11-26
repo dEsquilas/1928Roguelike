@@ -29,9 +29,10 @@ class Game(arcade.Window):
         self.sounds = {}
 
         # sprites lists
-        self.walls = None
-        self.mobs = None
-        self.bullets = None
+        self.player_sprites = None
+        self.walls_sprites = None
+        self.mobs_sprites = None
+        self.bullets_sprites = None
 
         map_name = "./assets/scenarios/default.tmj"
 
@@ -47,21 +48,32 @@ class Game(arcade.Window):
         self.camera = arcade.Camera(self.width, self.height)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
+        # define sprites lists
+
+        self.bullets_sprites = arcade.SpriteList()
+        self.player_sprites = arcade.SpriteList()
+        self.mobs_sprites = arcade.SpriteList()
+        self.bullets_sprites = arcade.SpriteList()
+        self.walls_sprites = get_wall_sprites(self)
+
+        # append initial elements to sprites lists
 
         self.player = Player.Player()
-        self.scene.add_sprite("Player", self.player)
+        self.player_sprites.append(self.player)
 
-        self.mobs = arcade.SpriteList()
         mobType1 = Type1.Type1()
-        self.mobs.append(mobType1)
+        self.mobs_sprites.append(mobType1)
 
-        self.bullets = arcade.SpriteList()
+        self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls_sprites)
 
-        self.walls = get_wall_sprites(self)
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
+        # sounds
 
         self.sounds["bullet"] = arcade.load_sound("./assets/sounds/shoot.wav")
         self.sounds["mob_dead"] = arcade.load_sound("./assets/sounds/mob_dead.mp3")
+        self.sounds["ouch"] = arcade.load_sound("./assets/sounds/ouch.mp3")
+        self.sounds["crash"] = arcade.load_sound("./assets/sounds/crash.mp3")
+
+        # limit framerate
 
         self.set_update_rate(1 / 60)
 
@@ -82,18 +94,13 @@ class Game(arcade.Window):
 
         self.player.is_attacking = False if key == arcade.key.SPACE else self.player.is_attacking
 
-    def on_draw(self):
-        self.clear()
-        self.scene.draw()
-        self.bullets.draw()
-        self.mobs.draw()
 
-    def check_bullet_collisions(self):
+    def check_bullet_mobs_collisions(self):
 
         collisions = []
 
-        for mob in self.mobs:
-            current_collisions = arcade.check_for_collision_with_list(mob, self.bullets)
+        for mob in self.mobs_sprites:
+            current_collisions = arcade.check_for_collision_with_list(mob, self.bullets_sprites)
             if current_collisions:
                 mob.health -= self.player.attack_dmg
                 collisions += current_collisions
@@ -101,33 +108,62 @@ class Game(arcade.Window):
         return collisions
 
     def check_mob_health(self):
-        for mob in self.mobs:
+        for mob in self.mobs_sprites:
             if mob.health <= 0:
-                self.mobs.remove(mob)
+                self.mobs_sprites.remove(mob)
                 arcade.play_sound(self.sounds["mob_dead"])
 
+    def check_mob_player_collisions(self):
+        collisions = arcade.check_for_collision_with_list(self.player, self.mobs_sprites)
+        if len(collisions) and time.time() - self.player.last_damage_time > 0.2:
+            arcade.play_sound(self.sounds["ouch"])
+            self.player.health -= collisions[0].attack_dmg
+            self.player.last_damage_time = time.time()
+        return collisions
+
+    def check_player_health(self):
+        if self.player.health <= 0:
+            arcade.play_sound(self.sounds["crash"])
+            self.player_sprites.remove(self.player)
+            self.player = None
+
     def remove_bullets(self, collisions):
-        for bullet in self.bullets:
+        for bullet in self.bullets_sprites:
             if bullet.should_remove or bullet in collisions:
-                self.bullets.remove(bullet)
+                self.bullets_sprites.remove(bullet)
 
-    def on_update(self, delta_time):
 
+    def fire_bullets(self):
         if self.player.is_attacking and time.time() - self.player.last_attack_time > self.player.fire_speed:
             self.player.last_attack_time = time.time()
             bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size(), self.sounds["bullet"])
-            self.bullets.append(bullet)
+            self.bullets_sprites.append(bullet)
 
-        player_collisions = arcade.check_for_collision_with_list(self.player, self.mobs)
+    def on_update(self, delta_time):
 
-        bullet_collisions = self.check_bullet_collisions()
+        bullet_collisions = self.check_bullet_mobs_collisions()
         self.remove_bullets(bullet_collisions)
         self.check_mob_health()
 
+        if self.player:
+            self.fire_bullets()
+            self.check_mob_player_collisions()
+            self.check_player_health()
+
+
+        # updates
         self.scene.update()
-        self.mobs.update()
-        self.bullets.update()
+        self.player_sprites.update()
+        self.mobs_sprites.update()
+        self.bullets_sprites.update()
         self.physics_engine.update()
+
+    def on_draw(self):
+        self.clear()
+        self.scene.draw()
+        self.player_sprites.draw()
+        self.bullets_sprites.draw()
+        self.mobs_sprites.draw()
 
 
 
