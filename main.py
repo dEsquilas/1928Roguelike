@@ -61,6 +61,7 @@ class Game(arcade.Window):
         self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
 
         self.sounds["bullet"] = arcade.load_sound("./assets/sounds/shoot.wav")
+        self.sounds["mob_dead"] = arcade.load_sound("./assets/sounds/mob_dead.mp3")
 
         self.set_update_rate(1 / 60)
 
@@ -103,6 +104,7 @@ class Game(arcade.Window):
         for mob in self.mobs:
             if mob.health <= 0:
                 self.mobs.remove(mob)
+                arcade.play_sound(self.sounds["mob_dead"])
 
     def remove_bullets(self, collisions):
         for bullet in self.bullets:
