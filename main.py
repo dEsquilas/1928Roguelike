@@ -70,6 +70,11 @@ class Game(arcade.Window):
         self.mobs.draw()
 
     def on_update(self, delta_time):
+
+        collisions = arcade.check_for_collision_with_list(self.player, self.mobs)
+        if len(collisions) > 0:
+            print("Collisions")
+
         self.scene.update()
         self.mobs.update()
         self.physics_engine.update()
