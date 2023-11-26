@@ -1,5 +1,6 @@
 import arcade
-from player import Player
+import time
+from player import Player, Bullet
 from mobs import Type1
 from helpers.Consts import *
 from helpers.SpriteHelper import get_wall_sprites
@@ -26,6 +27,7 @@ class Game(arcade.Window):
         # sprites lists
         self.walls = None
         self.mobs = None
+        self.bullets = None
 
         map_name = "./assets/scenarios/default.tmj"
 
@@ -49,6 +51,8 @@ class Game(arcade.Window):
         mobType1 = Type1.Type1()
         self.mobs.append(mobType1)
 
+        self.bullets = arcade.SpriteList()
+
         self.walls = get_wall_sprites(self)
         self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
 
@@ -58,18 +62,34 @@ class Game(arcade.Window):
         self.player.is_moving_left = True if key == arcade.key.LEFT else self.player.is_moving_left
         self.player.is_moving_right = True if key == arcade.key.RIGHT else self.player.is_moving_right
 
+        self.player.is_attacking = True if key == arcade.key.SPACE else self.player.is_attacking
+
     def on_key_release(self, key, modifiers):
         self.player.is_moving_up = False if key == arcade.key.UP else self.player.is_moving_up
         self.player.is_moving_down = False if key == arcade.key.DOWN else self.player.is_moving_down
         self.player.is_moving_left = False if key == arcade.key.LEFT else self.player.is_moving_left
         self.player.is_moving_right = False if key == arcade.key.RIGHT else self.player.is_moving_right
 
+        self.player.is_attacking = False if key == arcade.key.SPACE else self.player.is_attacking
+
     def on_draw(self):
         self.clear()
         self.scene.draw()
+        self.bullets.draw()
         self.mobs.draw()
 
     def on_update(self, delta_time):
+
+        if self.player.is_attacking and time.time() - self.player.last_attack_time > self.player.fire_speed:
+            self.player.last_attack_time = time.time()
+            bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size())
+            self.bullets.append(bullet)
+            print("Bullet added")
+
+        for bullet in self.bullets:
+            if bullet.should_remove:
+                self.bullets.remove(bullet)
+                print("Bullet removed")
 
         collisions = arcade.check_for_collision_with_list(self.player, self.mobs)
         if len(collisions) > 0:
@@ -77,6 +97,7 @@ class Game(arcade.Window):
 
         self.scene.update()
         self.mobs.update()
+        self.bullets.update()
         self.physics_engine.update()
 
 

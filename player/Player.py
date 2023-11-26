@@ -14,6 +14,11 @@ class Player(arcade.Sprite):
         self.is_moving_left = False
         self.is_moving_right = False
 
+        self.is_attacking = False
+        self.last_attack_time = 0
+
+        self.direction = D_UP
+
         self.speed_x = 0
         self.speed_y = 0
 
@@ -21,6 +26,7 @@ class Player(arcade.Sprite):
 
         self.health = 100
         self.speed = 5
+        self.fire_speed = 0.1
 
     def update(self):
 
@@ -31,6 +37,15 @@ class Player(arcade.Sprite):
         self.speed_x += -self.speed if self.is_moving_left else 0
         self.speed_y += self.speed if self.is_moving_up else 0
         self.speed_y += -self.speed if self.is_moving_down else 0
+
+        if self.is_moving_up:
+            self.direction = D_UP
+        elif self.is_moving_down:
+            self.direction = D_DOWN
+        elif self.is_moving_left:
+            self.direction = D_LEFT
+        elif self.is_moving_right:
+            self.direction = D_RIGHT
 
         #print(self.speed_x, self.speed_y)
 
