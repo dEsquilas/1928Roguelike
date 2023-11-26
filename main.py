@@ -1,6 +1,7 @@
 import arcade
 from player import Player
-from helpers.consts import *
+from helpers.Consts import *
+from helpers.SpriteHelper import get_wall_sprites
 
 # Constants
 
@@ -22,7 +23,7 @@ class Game(arcade.Window):
         self.player = None
 
         # sprites lists
-        self.player_list = None
+        self.walls = None
 
         map_name = "./assets/scenarios/default.tmj"
 
@@ -42,7 +43,9 @@ class Game(arcade.Window):
         self.player = Player.Player()
         self.scene.add_sprite("Player", self.player)
 
-        #self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
+        self.walls = get_wall_sprites(self)
+
+        self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
 
     def on_key_press(self, key, modifiers):
         self.player.is_moving_up = True if key == arcade.key.UP else self.player.is_moving_up
@@ -56,21 +59,13 @@ class Game(arcade.Window):
         self.player.is_moving_left = False if key == arcade.key.LEFT else self.player.is_moving_left
         self.player.is_moving_right = False if key == arcade.key.RIGHT else self.player.is_moving_right
 
-
-
-
-
     def on_draw(self):
         self.clear()
-        self.camera.use()
         self.scene.draw()
 
     def on_update(self, delta_time):
-        print(self.player.is_moving_up, self.player.is_moving_down, self.player.is_moving_left,
-              self.player.is_moving_right)
-        # self.camera.update()
         self.scene.update()
-        #self.physics_engine.update()
+        self.physics_engine.update()
 
 
 

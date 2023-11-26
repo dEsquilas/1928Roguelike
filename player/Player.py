@@ -1,5 +1,5 @@
 import arcade
-from helpers.consts import *
+from helpers.Consts import *
 
 class Player(arcade.Sprite):
     def __init__(self):
