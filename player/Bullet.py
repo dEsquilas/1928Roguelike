@@ -2,7 +2,7 @@ import arcade
 from helpers.Consts import *
 
 class Bullet(arcade.Sprite):
-    def __init__(self, origin, direction, limits):
+    def __init__(self, origin, direction, limits, sound):
         super().__init__()
         self.texture = arcade.load_texture("./assets/sprites/bullet.png")
         self.scale = 2
@@ -19,6 +19,10 @@ class Bullet(arcade.Sprite):
             1 if direction == D_DOWN else 0,
             1 if direction == D_LEFT else 0,
             1 if direction == D_RIGHT else 0]
+
+
+
+        arcade.play_sound(sound)
 
 
 

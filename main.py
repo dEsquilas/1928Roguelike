@@ -24,6 +24,8 @@ class Game(arcade.Window):
 
         self.player = None
 
+        self.sounds = {}
+
         # sprites lists
         self.walls = None
         self.mobs = None
@@ -56,6 +58,11 @@ class Game(arcade.Window):
         self.walls = get_wall_sprites(self)
         self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
 
+        self.sounds["bullet"] = arcade.load_sound("./assets/sounds/shoot.wav")
+
+        self.set_update_rate(1 / 60)
+
+
     def on_key_press(self, key, modifiers):
         self.player.is_moving_up = True if key == arcade.key.UP else self.player.is_moving_up
         self.player.is_moving_down = True if key == arcade.key.DOWN else self.player.is_moving_down
@@ -82,7 +89,7 @@ class Game(arcade.Window):
 
         if self.player.is_attacking and time.time() - self.player.last_attack_time > self.player.fire_speed:
             self.player.last_attack_time = time.time()
-            bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size())
+            bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size(), self.sounds["bullet"])
             self.bullets.append(bullet)
             print("Bullet added")
 
