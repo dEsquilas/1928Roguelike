@@ -5,6 +5,8 @@ from mobs import Type1
 from helpers.Consts import *
 from helpers.SpriteHelper import get_wall_sprites
 
+from pprint import pprint
+
 # Constants
 
 
@@ -85,22 +87,40 @@ class Game(arcade.Window):
         self.bullets.draw()
         self.mobs.draw()
 
+    def check_bullet_collisions(self):
+
+        collisions = []
+
+        for mob in self.mobs:
+            current_collisions = arcade.check_for_collision_with_list(mob, self.bullets)
+            if current_collisions:
+                mob.health -= self.player.attack_dmg
+                collisions += current_collisions
+
+        return collisions
+
+    def check_mob_health(self):
+        for mob in self.mobs:
+            if mob.health <= 0:
+                self.mobs.remove(mob)
+
+    def remove_bullets(self, collisions):
+        for bullet in self.bullets:
+            if bullet.should_remove or bullet in collisions:
+                self.bullets.remove(bullet)
+
     def on_update(self, delta_time):
 
         if self.player.is_attacking and time.time() - self.player.last_attack_time > self.player.fire_speed:
             self.player.last_attack_time = time.time()
             bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size(), self.sounds["bullet"])
             self.bullets.append(bullet)
-            print("Bullet added")
 
-        for bullet in self.bullets:
-            if bullet.should_remove:
-                self.bullets.remove(bullet)
-                print("Bullet removed")
+        player_collisions = arcade.check_for_collision_with_list(self.player, self.mobs)
 
-        collisions = arcade.check_for_collision_with_list(self.player, self.mobs)
-        if len(collisions) > 0:
-            print("Collisions")
+        bullet_collisions = self.check_bullet_collisions()
+        self.remove_bullets(bullet_collisions)
+        self.check_mob_health()
 
         self.scene.update()
         self.mobs.update()
