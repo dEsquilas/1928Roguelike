@@ -1,5 +1,6 @@
 import arcade
 from player import Player
+from mobs import Type1
 from helpers.Consts import *
 from helpers.SpriteHelper import get_wall_sprites
 
@@ -24,6 +25,7 @@ class Game(arcade.Window):
 
         # sprites lists
         self.walls = None
+        self.mobs = None
 
         map_name = "./assets/scenarios/default.tmj"
 
@@ -43,8 +45,11 @@ class Game(arcade.Window):
         self.player = Player.Player()
         self.scene.add_sprite("Player", self.player)
 
-        self.walls = get_wall_sprites(self)
+        self.mobs = arcade.SpriteList()
+        mobType1 = Type1.Type1()
+        self.mobs.append(mobType1)
 
+        self.walls = get_wall_sprites(self)
         self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)
 
     def on_key_press(self, key, modifiers):
@@ -62,9 +67,11 @@ class Game(arcade.Window):
     def on_draw(self):
         self.clear()
         self.scene.draw()
+        self.mobs.draw()
 
     def on_update(self, delta_time):
         self.scene.update()
+        self.mobs.update()
         self.physics_engine.update()
 
 
