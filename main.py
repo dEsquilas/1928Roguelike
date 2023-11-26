@@ -139,6 +139,10 @@ class Game(arcade.Window):
             bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size(), self.sounds["bullet"])
             self.bullets_sprites.append(bullet)
 
+    def custom_mobs_sprites_update(self, player):
+        for mob in self.mobs_sprites:
+            mob.update(player)
+
     def on_update(self, delta_time):
 
         bullet_collisions = self.check_bullet_mobs_collisions()
@@ -154,7 +158,7 @@ class Game(arcade.Window):
         # updates
         self.scene.update()
         self.player_sprites.update()
-        self.mobs_sprites.update()
+        self.custom_mobs_sprites_update(self.player)
         self.bullets_sprites.update()
         self.physics_engine.update()
 

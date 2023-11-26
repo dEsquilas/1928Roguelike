@@ -1,4 +1,5 @@
 import arcade
+import math
 from helpers.Consts import *
 
 class Type1(arcade.Sprite):
@@ -20,20 +21,34 @@ class Type1(arcade.Sprite):
         # Main Attr
 
         self.health = 100
-        self.speed = 5
+        self.speed = 1
         self.attack_dmg = 10
 
-    def update(self):
+    def update(self, player):
 
-        self.speed_x = 0
-        self.speed_y = 0
+        # update sprite for player direction
 
-        self.speed_x += self.speed if self.is_moving_right else 0
-        self.speed_x += -self.speed if self.is_moving_left else 0
-        self.speed_y += self.speed if self.is_moving_up else 0
-        self.speed_y += -self.speed if self.is_moving_down else 0
+        direction_x = self.center_x - player.center_x
+        direction_y = self.center_y - player.center_y
 
-        #print(self.speed_x, self.speed_y)
+        magnitude = math.sqrt(direction_x ** 2 + direction_y ** 2)
 
-        self.center_x += self.speed_x
-        self.center_y += self.speed_y
+        # Normalizar las direcciones dividiendo por la magnitud
+        if magnitude > 0:
+            normalized_direction_x = direction_x / magnitude
+            normalized_direction_y = direction_y / magnitude
+        else:
+            # En caso de que las direcciones tengan magnitud cero (evita divisiones por cero)
+            normalized_direction_x = 0
+            normalized_direction_y = 0
+
+        # Calcular la cantidad de movimiento en cada dirección
+        to_move_x = - normalized_direction_x * self.speed
+        to_move_y = - normalized_direction_y * self.speed
+
+        self.center_x += to_move_x
+        self.center_y += to_move_y
+
+
+
+
