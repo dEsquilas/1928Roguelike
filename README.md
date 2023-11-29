@@ -9,7 +9,8 @@ To Do
 - [x] Add powerups that upgrade your stats
 - [x] Add remove powerups on take it
 - [x] Add effect on powerups take
-- [ ] Add effect on powerups movement
+- [x] Add effect on powerups movement
+- [ ] Add pickups hearts
 - [ ] Add doors sprites
 - [ ] Add collisions on doors
 - [ ] Add lock doors
@@ -18,3 +19,6 @@ To Do
 - [ ] Generate random maps
 - [ ] Block bullets on walls
 - [ ] Add rocks to map
+- [ ] Add basic hud with health
+- [ ] Add basic hud powerups
+- [ ] Add basic hud for current dmg, fire rate
