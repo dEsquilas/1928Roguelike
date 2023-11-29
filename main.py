@@ -174,6 +174,7 @@ class Game(arcade.Window):
         # updates
         self.scene.update()
         self.player_sprites.update()
+        self.items_sprites.update()
         self.custom_mobs_sprites_update(self.player)
         self.bullets_sprites.update()
         self.physics_engine.update()

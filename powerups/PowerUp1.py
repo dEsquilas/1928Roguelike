@@ -10,6 +10,10 @@ class PowerUp1(arcade.Sprite):
         self.center_y = position[1] * TILE_SCALING
         self.scale = TILE_SCALING
 
+        self.oscilate_value = 10
+        self.direction = 1
+        self.origin_y = position[1] * TILE_SCALING
+
 
         self.attr_modifier_id = "fire_speed"
         self.attr_modifier_type = 2
@@ -23,4 +27,18 @@ class PowerUp1(arcade.Sprite):
             player.attr[self.attr_modifier_id] *= self.attr_modifier_value
 
     def update(self):
-        pass
+
+        movement = 0.5
+
+        if self.direction == 1:
+            if abs(self.center_y - self.origin_y) < self.oscilate_value:
+                self.center_y += movement
+            else:
+                self.direction = -1
+                self.center_y -= movement
+        if self.direction == -1:
+            if abs(self.center_y - self.origin_y) < self.oscilate_value:
+                self.center_y -= movement
+            else:
+                self.direction = 1
+                self.center_y += movement
