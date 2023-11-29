@@ -16,3 +16,5 @@ To Do
 - [ ] Add unlock doors
 - [ ] Generate random rooms
 - [ ] Generate random maps
+- [ ] Block bullets on walls
+- [ ] Add rocks to map
