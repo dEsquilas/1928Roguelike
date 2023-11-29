@@ -25,20 +25,21 @@ class Player(arcade.Sprite):
 
         # Main Attr
 
-        self.health = 100
-        self.speed = 5
-        self.fire_speed = 0.1
-        self.attack_dmg = 10
+        self.attr = {}
+        self.attr['health'] = 100
+        self.attr['speed'] = 5
+        self.attr['fire_speed'] = 0.5
+        self.attr['attack_dmg'] = 10
 
     def update(self):
 
         self.speed_x = 0
         self.speed_y = 0
 
-        self.speed_x += self.speed if self.is_moving_right else 0
-        self.speed_x += -self.speed if self.is_moving_left else 0
-        self.speed_y += self.speed if self.is_moving_up else 0
-        self.speed_y += -self.speed if self.is_moving_down else 0
+        self.speed_x += self.attr["speed"] if self.is_moving_right else 0
+        self.speed_x += -self.attr["speed"] if self.is_moving_left else 0
+        self.speed_y += self.attr["speed"] if self.is_moving_up else 0
+        self.speed_y += -self.attr["speed"] if self.is_moving_down else 0
 
         if self.is_moving_up:
             self.direction = D_UP

@@ -109,7 +109,7 @@ class Game(arcade.Window):
         for mob in self.mobs_sprites:
             current_collisions = arcade.check_for_collision_with_list(mob, self.bullets_sprites)
             if current_collisions:
-                mob.health -= self.player.attack_dmg
+                mob.health -= self.player.attr["attack_dmg"]
                 collisions += current_collisions
 
         return collisions
@@ -124,12 +124,18 @@ class Game(arcade.Window):
         collisions = arcade.check_for_collision_with_list(self.player, self.mobs_sprites)
         if len(collisions) and time.time() - self.player.last_damage_time > 0.2:
             arcade.play_sound(self.sounds["ouch"])
-            self.player.health -= collisions[0].attack_dmg
+            self.player.attr["health"] -= collisions[0].attack_dmg
             self.player.last_damage_time = time.time()
         return collisions
 
+    def check_player_items_collisions(self):
+        collisions = arcade.check_for_collision_with_list(self.player, self.items_sprites)
+        if len(collisions):
+            collisions[0].apply_effect(self.player)
+            self.items_sprites.remove(collisions[0])
+
     def check_player_health(self):
-        if self.player.health <= 0:
+        if self.player.attr["health"] <= 0:
             arcade.play_sound(self.sounds["crash"])
             self.player_sprites.remove(self.player)
             self.player = None
@@ -141,7 +147,7 @@ class Game(arcade.Window):
 
 
     def fire_bullets(self):
-        if self.player.is_attacking and time.time() - self.player.last_attack_time > self.player.fire_speed:
+        if self.player.is_attacking and time.time() - self.player.last_attack_time > self.player.attr["fire_speed"]:
             self.player.last_attack_time = time.time()
             bullet = Bullet.Bullet((self.player.center_x, self.player.center_y), self.player.direction, self.get_size(), self.sounds["bullet"])
             self.bullets_sprites.append(bullet)
@@ -160,6 +166,7 @@ class Game(arcade.Window):
             self.fire_bullets()
             self.check_mob_player_collisions()
             self.check_player_health()
+            self.check_player_items_collisions()
 
 
         # updates
