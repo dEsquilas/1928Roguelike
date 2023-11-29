@@ -79,6 +79,7 @@ class Game(arcade.Window):
         self.sounds["mob_dead"] = arcade.load_sound("./assets/sounds/mob_dead.mp3")
         self.sounds["ouch"] = arcade.load_sound("./assets/sounds/ouch.mp3")
         self.sounds["crash"] = arcade.load_sound("./assets/sounds/crash.mp3")
+        self.sounds["pickup_powerup"] = arcade.load_sound("./assets/sounds/pop.wav")
 
         # limit framerate
 
@@ -132,6 +133,7 @@ class Game(arcade.Window):
         collisions = arcade.check_for_collision_with_list(self.player, self.items_sprites)
         if len(collisions):
             collisions[0].apply_effect(self.player)
+            arcade.play_sound(self.sounds["pickup_powerup"])
             self.items_sprites.remove(collisions[0])
 
     def check_player_health(self):

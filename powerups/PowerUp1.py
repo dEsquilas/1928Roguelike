@@ -12,8 +12,8 @@ class PowerUp1(arcade.Sprite):
 
 
         self.attr_modifier_id = "fire_speed"
-        self.attr_modifier_type = 1
-        self.attr_modifier_value = 0.5
+        self.attr_modifier_type = 2
+        self.attr_modifier_value = 0.25
 
 
     def apply_effect(self, player):
