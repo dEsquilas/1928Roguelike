@@ -3,17 +3,18 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "default.tmx",
+    "activeFile": "tilesets/Walls.tsx",
     "expandedProjectPaths": [
-        "."
+        ".",
+        "tilesets"
     ],
     "fileStates": {
         "default.tmx": {
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 395,
-                "y": 197.3333333333333
+                "x": 394.66666666666663,
+                "y": 196.66666666666669
             }
         },
         "tilesets/Walls.tsx": {
@@ -33,8 +34,8 @@
     ],
     "project": "scenarios.tiled-project",
     "recentFiles": [
-        "tilesets/Walls.tsx",
-        "default.tmx"
+        "default.tmx",
+        "tilesets/Walls.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

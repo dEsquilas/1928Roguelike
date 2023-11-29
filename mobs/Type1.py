@@ -3,12 +3,12 @@ import math
 from helpers.Consts import *
 
 class Type1(arcade.Sprite):
-    def __init__(self):
+    def __init__(self, position):
         super().__init__()
         self.texture = arcade.load_texture("./assets/sprites/slime.png")
         self.scale = TILE_SCALING
-        self.center_x = 400
-        self.center_y = 400
+        self.center_x = position[0] * TILE_SCALING
+        self.center_y = position[1] * TILE_SCALING
 
         self.is_moving_up = False
         self.is_moving_down = False

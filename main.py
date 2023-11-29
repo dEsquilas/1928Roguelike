@@ -2,6 +2,7 @@ import arcade
 import time
 from player import Player, Bullet
 from mobs import Type1
+from powerups import PowerUp1
 from helpers.Consts import *
 from helpers.SpriteHelper import get_wall_sprites
 
@@ -32,6 +33,7 @@ class Game(arcade.Window):
         self.player_sprites = None
         self.walls_sprites = None
         self.mobs_sprites = None
+        self.items_sprites = None
         self.bullets_sprites = None
 
         map_name = "./assets/scenarios/default.tmj"
@@ -54,6 +56,7 @@ class Game(arcade.Window):
         self.player_sprites = arcade.SpriteList()
         self.mobs_sprites = arcade.SpriteList()
         self.bullets_sprites = arcade.SpriteList()
+        self.items_sprites = arcade.SpriteList()
         self.walls_sprites = get_wall_sprites(self)
 
         # append initial elements to sprites lists
@@ -61,8 +64,12 @@ class Game(arcade.Window):
         self.player = Player.Player()
         self.player_sprites.append(self.player)
 
-        mobType1 = Type1.Type1()
+        mobType1 = Type1.Type1((200, 200))
         self.mobs_sprites.append(mobType1)
+
+        powerUp1 = PowerUp1.PowerUp1((100, 100))
+        self.items_sprites.append(powerUp1)
+
 
         self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls_sprites)
 
@@ -166,6 +173,7 @@ class Game(arcade.Window):
         self.clear()
         self.scene.draw()
         self.player_sprites.draw()
+        self.items_sprites.draw()
         self.bullets_sprites.draw()
         self.mobs_sprites.draw()
 
