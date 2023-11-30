@@ -13,8 +13,8 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 394.66666666666663,
-                "y": 196.66666666666669
+                "x": 393.9999999999999,
+                "y": 196
             }
         },
         "tilesets/Walls.tsx": {
@@ -22,7 +22,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "D:/Develop/python/1928Roguelike/assets",
+    "last.exportedFilePath": "D:/Develop/python/1928Roguelike/assets/scenarios",
     "last.imagePath": "D:/Develop/python/1928Roguelike/assets/tilesets",
     "map.height": 9,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",

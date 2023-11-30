@@ -1,28 +1,27 @@
 import arcade
 from helpers.Consts import *
+from helpers.Sounds import ssounds
 
 class Bullet(arcade.Sprite):
-    def __init__(self, origin, direction, limits, sound):
+    def __init__(self, origin, direction):
         super().__init__()
         self.texture = arcade.load_texture("./assets/sprites/bullet.png")
         self.scale = 2
         self.center_x = origin[0]
         self.center_y = origin[1]
         self.speed = 10
-        self.max_distance = 200 * TILE_SCALING
+        self.max_distance = 100 * TILE_SCALING
         self.origin = origin
-        self.limits = limits
+        self.limits = (WINDOW_WIDTH, WINDOW_HEIGHT)
         self.should_remove = False
 
         self.direction = [
-            1 if direction == D_UP else 0,
-            1 if direction == D_DOWN else 0,
-            1 if direction == D_LEFT else 0,
-            1 if direction == D_RIGHT else 0]
+            1 if direction == UP else 0,
+            1 if direction == DOWN else 0,
+            1 if direction == LEFT else 0,
+            1 if direction == RIGHT else 0]
 
-
-
-        arcade.play_sound(sound)
+        ssounds.play("bullet")
 
 
 

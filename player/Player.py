@@ -1,58 +1,64 @@
 import arcade
+import time
 from helpers.Consts import *
+from helpers.Attributes import Attributes
+from player import PlayerSprite, Bullet
 
-class Player(arcade.Sprite):
+class Player():
     def __init__(self):
         super().__init__()
-        self.texture = arcade.load_texture("./assets/sprites/player.png")
-        self.scale = TILE_SCALING
-        self.center_x = 100
-        self.center_y = 100
 
-        self.is_moving_up = False
-        self.is_moving_down = False
-        self.is_moving_left = False
-        self.is_moving_right = False
-
-        self.is_attacking = False
+        self.sprite = PlayerSprite.PlayerSprite()
+        self.bullets = arcade.SpriteList()
+        self.is_attacking = 0
         self.last_attack_time = 0
-        self.last_damage_time = 0
+        self.last_hit_time = 0
+        self.facing = UP
 
-        self.direction = D_UP
+        self.attr = Attributes(100, 5, 0.1, 10)
 
-        self.speed_x = 0
-        self.speed_y = 0
+        self.is_moving = {}
+        for direction in DIRECTIONS:
+            self.is_moving[direction] = False
 
-        # Main Attr
+    def on_key_press(self, key, modifiers):
 
-        self.attr = {}
-        self.attr['health'] = 100
-        self.attr['speed'] = 5
-        self.attr['fire_speed'] = 0.5
-        self.attr['attack_dmg'] = 10
+        for direction in DIRECTIONS:
+            self.is_moving[direction] = True if key == DIRECTION_KEYS[direction] else self.is_moving[direction]
+            if self.is_moving[direction]:
+                self.facing = direction
+
+
+        self.is_attacking = True if key == arcade.key.SPACE else self.is_attacking
+
+    def on_key_release(self, key, modifiers):
+
+        for direction in DIRECTIONS:
+            self.is_moving[direction] = False if key == DIRECTION_KEYS[direction] else self.is_moving[direction]
+
+        self.is_attacking = False if key == arcade.key.SPACE else self.  is_attacking
+
+    def fire(self):
+        if self.is_attacking and time.time() - self.last_attack_time > self.attr.get("fire_speed"):
+            self. last_attack_time = time.time()
+            bullet = Bullet.Bullet((self.sprite.center_x, self.sprite.center_y), self.facing)
+            self.bullets.append(bullet)
+
+    def check_bullets_to_remove(self):
+        for bullet in self.bullets:
+            if bullet.should_remove:
+                self.bullets.remove(bullet)
 
     def update(self):
 
-        self.speed_x = 0
-        self.speed_y = 0
+        self.fire()
+        self.check_bullets_to_remove()
+        self.sprite.update(self.is_moving, self.attr.get("speed"))
+        self.bullets.update()
 
-        self.speed_x += self.attr["speed"] if self.is_moving_right else 0
-        self.speed_x += -self.attr["speed"] if self.is_moving_left else 0
-        self.speed_y += self.attr["speed"] if self.is_moving_up else 0
-        self.speed_y += -self.attr["speed"] if self.is_moving_down else 0
+    def draw(self):
+        self.bullets.draw()
+        self.sprite.draw()
 
-        if self.is_moving_up:
-            self.direction = D_UP
-        elif self.is_moving_down:
-            self.direction = D_DOWN
-        elif self.is_moving_left:
-            self.direction = D_LEFT
-        elif self.is_moving_right:
-            self.direction = D_RIGHT
-
-        #print(self.speed_x, self.speed_y)
-
-        self.center_x += self.speed_x
-        self.center_y += self.speed_y
 
 
