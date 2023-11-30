@@ -1,8 +1,9 @@
 import arcade
 import math
 from helpers.Consts import *
+from helpers.Attributes import Attributes
 
-class Type1(arcade.Sprite):
+class MobBase(arcade.Sprite):
     def __init__(self, position):
         super().__init__()
         self.texture = arcade.load_texture("./assets/sprites/slime.png")
@@ -20,11 +21,9 @@ class Type1(arcade.Sprite):
 
         # Main Attr
 
-        self.health = 100
-        self.speed = 1
-        self.attack_dmg = 10
+        self.attr = Attributes(100, 5, 0.1, 10)
 
-    def update(self, player):
+    def custom_update(self, player):
 
         # update sprite for player direction
 
@@ -43,8 +42,8 @@ class Type1(arcade.Sprite):
             normalized_direction_y = 0
 
         # Calcular la cantidad de movimiento en cada dirección
-        to_move_x = - normalized_direction_x * self.speed
-        to_move_y = - normalized_direction_y * self.speed
+        to_move_x = - normalized_direction_x * self.attr.get("speed")
+        to_move_y = - normalized_direction_y * self.attr.get("speed")
 
         self.center_x += to_move_x
         self.center_y += to_move_y

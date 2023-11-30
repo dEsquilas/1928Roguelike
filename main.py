@@ -4,9 +4,6 @@ from player import Player, Bullet
 from rooms import Room
 from helpers.Consts import *
 
-
-from pprint import pprint
-
 # Constants
 
 
@@ -44,9 +41,12 @@ class Game(arcade.Window):
     def on_update(self, delta_time):
 
         # updates
-        self.room.update()
-        self.player.update()
+        self.room.update(self.player)
+        self.player.update(self.room.mobs)
         self.physics_engine.update()
+
+        if not self.player.is_alive:
+            arcade.close_window()
 
     def on_draw(self):
         self.clear()

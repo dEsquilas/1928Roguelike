@@ -8,3 +8,6 @@ class Attributes:
 
     def get(self, attr):
         return self.__dict__[attr]
+
+    def set(self, attr, value):
+        self.__dict__[attr] = value

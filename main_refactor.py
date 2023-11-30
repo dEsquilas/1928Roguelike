@@ -1,7 +1,7 @@
 import arcade
 import time
 from player import Player, Bullet
-from mobs import Type1
+from mobs import MobBase
 from powerups import PowerUp1
 from helpers.Consts import *
 from helpers.SpriteHelper import get_wall_sprites

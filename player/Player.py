@@ -2,6 +2,7 @@ import arcade
 import time
 from helpers.Consts import *
 from helpers.Attributes import Attributes
+from helpers.Sounds import ssounds
 from player import PlayerSprite, Bullet
 
 class Player():
@@ -10,6 +11,7 @@ class Player():
 
         self.sprite = PlayerSprite.PlayerSprite()
         self.bullets = arcade.SpriteList()
+        self.is_alive = True
         self.is_attacking = 0
         self.last_attack_time = 0
         self.last_hit_time = 0
@@ -49,10 +51,25 @@ class Player():
             if bullet.should_remove:
                 self.bullets.remove(bullet)
 
-    def update(self):
+    def check_player_damage_collisions(self, mobs):
+        for mob in mobs:
+            if arcade.check_for_collision(self.sprite, mob) and time.time() - self.last_hit_time > IFRAMES:
+                self.attr.set("health", self.attr.get("health") - mob.attr.get("attack_dmg"))
+                self.last_hit_time = time.time()
+                ssounds.play("ouch")
+                print(self.attr.get("health"))
+
+        if self.attr.get("health") <= 0:
+            self.is_alive = False
+
+
+    def update(self, mobs):
 
         self.fire()
+
         self.check_bullets_to_remove()
+        self.check_player_damage_collisions(mobs)
+
         self.sprite.update(self.is_moving, self.attr.get("speed"))
         self.bullets.update()
 
