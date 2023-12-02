@@ -10,16 +10,17 @@ class Game(arcade.Window):
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, SCREEN_TITLE)
 
         self.room = None
+        self.rooms = []
         self.player = None
         self.physics_engine = None
+        self.current_room = 1
         self.sounds = {}
 
     def setup(self):
 
         self.rooms = []
-        self.current_room = 1
-        self.rooms.append(Room.Room("./assets/scenarios/default.tmx"))
-        self.rooms.append(Room.Room("./assets/scenarios/default2.tmx"))
+        self.rooms.append(Room.Room("./assets/scenarios/default.tmx", 1))
+        self.rooms.append(Room.Room("./assets/scenarios/default2.tmx", 2))
 
         self.room = self.rooms[self.current_room]
         self.player = Player.Player()
@@ -39,13 +40,15 @@ class Game(arcade.Window):
 
         # updates
 
-        is_on_door = self.room.is_player_on_door(self.player)
+        door = self.room.is_player_on_door(self.player)
 
-        if is_on_door:
-            self.current_room = 1 if self.current_room == 0 else 0
-            self.room = self.rooms[self.current_room]
-            self.player.sprite.center_x = WINDOW_WIDTH / 2
-            self.player.sprite.center_y = WINDOW_HEIGHT / 2
+        if door:
+            self.current_room = door.destination
+            for room in self.rooms:
+                if room.id == self.current_room:
+                    self.room = room
+                    break
+            self.player.update_from_door(door)
 
         else:
             self.player.update(self.room.mobs, self.room.powerups)

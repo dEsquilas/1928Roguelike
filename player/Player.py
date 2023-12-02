@@ -79,7 +79,6 @@ class Player():
                 powerup.should_remove = True
                 ssounds.play("powerup")
 
-
     def update(self, mobs, powerups):
 
         self.fire()
@@ -93,6 +92,21 @@ class Player():
         self.bullets.update()
 
         self.hp_hud.custom_update(self.current_hp)
+
+    def update_from_door(self, door):
+
+        if door.type == 1:
+            self.sprite.center_x = WINDOW_WIDTH / 2
+            self.sprite.center_y = self.sprite.height / 2 + TILE_SIZE * TILE_SCALING
+        elif door.type == 2:
+            self.sprite.center_x = self.sprite.width / 2 + TILE_SIZE * TILE_SCALING
+            self.sprite.center_y = WINDOW_HEIGHT / 2
+        elif door.type == 3:
+            self.sprite.center_x = WINDOW_WIDTH / 2
+            self.sprite.center_y = WINDOW_HEIGHT - self.sprite.height / 2 - (TILE_SIZE * TILE_SCALING * 2) # this tile has 2x height
+        elif door.type == 4:
+            self.sprite.center_y = WINDOW_HEIGHT / 2
+            self.sprite.center_x = WINDOW_WIDTH - self.sprite.width / 2 - TILE_SIZE * TILE_SCALING
 
     def draw(self):
         self.bullets.draw()

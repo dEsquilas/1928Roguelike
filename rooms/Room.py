@@ -7,7 +7,7 @@ from powerups.PowerUpBase import PowerUpBase
 from rooms.Door import Door
 
 class Room():
-    def __init__(self, tile_file):
+    def __init__(self, tile_file, id):
         super().__init__()
 
         self.tile_map = arcade.load_tilemap(tile_file, TILE_SCALING, {})
@@ -18,13 +18,14 @@ class Room():
         self.walls = self.get_walls()
         self.obstacles = arcade.SpriteList()
         self.doors = arcade.SpriteList()
+        self.id = id
 
         # add elements
 
-        door1 = Door(1)
-        door2 = Door(2)
-        door3 = Door(3)
-        door4 = Door(4)
+        door1 = Door(1, 1)
+        door2 = Door(2, 2)
+        door3 = Door(3, 1)
+        door4 = Door(4, 2)
 
         self.doors.append(door1)
         self.doors.append(door2)
@@ -68,7 +69,7 @@ class Room():
     def is_player_on_door(self, player):
         for id, door in enumerate(self.doors):
             if arcade.check_for_collision(player.sprite, door):
-                return id + 1
+                return door
         return False
 
     def update(self, player):
