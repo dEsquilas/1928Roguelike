@@ -6,12 +6,13 @@ class Sounds():
         self.sounds = {}
 
         current_sounds = [
+            ("bullet", "wav"),
             ("crash", "mp3"),
+            ("glup", "mp3"),
             ("mob_dead", "mp3"),
             ("ouch", "mp3"),
             ("pop", "wav"),
-            ("bullet", "wav"),
-            ("powerup", "mp3")
+            ("powerup", "mp3"),
         ]
 
         for sound in current_sounds:

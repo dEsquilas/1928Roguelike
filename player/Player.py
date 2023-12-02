@@ -79,6 +79,14 @@ class Player():
                 powerup.should_remove = True
                 ssounds.play("powerup")
 
+    def check_player_pickup_collisions(self, pickups):
+        for pickup in pickups:
+            if arcade.check_for_collision(self.sprite, pickup):
+                pickup.apply_effect(self)
+                pickup.should_remove = True
+                if pickup.sound:
+                    ssounds.play(pickup.sound)
+
     def bullets_update(self, walls):
         for bullet in self.bullets:
             bullet.custom_update(walls)
@@ -88,6 +96,7 @@ class Player():
         self.fire()
         self.check_bullet_mobs_collisions(room.mobs)
         self.check_player_powerup_collisions(room.powerups)
+        self.check_player_pickup_collisions(room.pickups)
 
         self.check_bullets_to_remove()
         self.check_player_damage_collisions(room.mobs)

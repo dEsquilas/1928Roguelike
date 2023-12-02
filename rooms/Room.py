@@ -3,6 +3,7 @@ import arcade
 from helpers.Attributes import Attributes
 from helpers.Consts import *
 from mobs.MobBase import MobBase
+from pickups import Heart
 from powerups.PowerUpBase import PowerUpBase
 from rooms.Door import Door
 from rooms.BlockItem import BlockItem
@@ -49,6 +50,9 @@ class Room():
             self.obstacles.append(obstacle1)
             self.obstacles.append(obstacle2)
 
+            pickup1 = Heart.Heart((200, 100))
+            self.pickups.append(pickup1)
+
         self.walls = self.get_walls()
 
     def get_walls(self):
@@ -77,6 +81,12 @@ class Room():
             if powerup.should_remove:
                 self.powerups.remove(powerup)
 
+    def pickups_update(self):
+        self.pickups.update()
+        for pickup in self.pickups:
+            if pickup.should_remove:
+                self.pickups.remove(pickup)
+
     def is_player_on_door(self, player):
         for id, door in enumerate(self.doors):
             if arcade.check_for_collision(player.sprite, door):
@@ -86,7 +96,7 @@ class Room():
     def update(self, player):
         self.floor.update()
         self.mobs_update(player)
-        self.pickups.update()
+        self.pickups_update()
         self.powerups_update()
         self.walls.update()
         self.obstacles.update()

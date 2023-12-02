@@ -12,7 +12,7 @@ To Do
 - [x] Add effect on powerups movement
 - [ ] Add pickups hearts
 - [x] Add doors sprites
-- [ ] Add collisions on doors
+- [x] Add collisions on doors
 - [ ] Add lock doors
 - [ ] Add unlock doors
 - [ ] Generate random rooms
