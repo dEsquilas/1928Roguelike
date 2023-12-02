@@ -22,3 +22,4 @@ To Do
 - [ ] Add basic hud with health
 - [ ] Add basic hud powerups
 - [ ] Add basic hud for current dmg, fire rate
+- [x] Add refactor for set on each class each element

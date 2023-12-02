@@ -1,5 +1,8 @@
+import copy
+
 import arcade
 from mobs.MobBase import MobBase
+from helpers.Attributes import Attributes
 from helpers.Consts import *
 
 class Room():
@@ -16,8 +19,10 @@ class Room():
 
         # add elements
 
-        mobs1 = MobBase((250, 100))
-        mobs2 = MobBase((300, 150))
+        attr = Attributes(100, 1, 0.1, 10)
+
+        mobs1 = MobBase((250, 100), copy.deepcopy(attr), 1)
+        mobs2 = MobBase((300, 150), copy.deepcopy(attr), 2)
 
         self.mobs.append(mobs1)
         self.mobs.append(mobs2)
@@ -28,9 +33,11 @@ class Room():
             walls.append(sprite)
         return walls
 
-    def mobs_update(self, player_sprite):
+    def mobs_update(self, player):
         for mob in self.mobs:
-            mob.custom_update(player_sprite)
+            mob.custom_update(player )
+            if mob.should_remove:
+                self.mobs.remove(mob)
 
     def mobs_draw(self):
         for mob in self.mobs:
@@ -38,7 +45,7 @@ class Room():
 
     def update(self, player):
         self.floor.update()
-        self.mobs_update(player.sprite)
+        self.mobs_update(player)
         self.pickups.update()
         self.powerups.update()
         self.walls.update()

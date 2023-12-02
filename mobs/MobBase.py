@@ -2,29 +2,29 @@ import arcade
 import math
 from helpers.Consts import *
 from helpers.Attributes import Attributes
+from helpers.Sounds import ssounds
 
 class MobBase(arcade.Sprite):
-    def __init__(self, position):
+    def __init__(self, position, attr=Attributes(100, 5, 0.1, 10), id=0):
         super().__init__()
         self.texture = arcade.load_texture("./assets/sprites/slime.png")
         self.scale = TILE_SCALING
         self.center_x = position[0] * TILE_SCALING
         self.center_y = position[1] * TILE_SCALING
 
-        self.is_moving_up = False
-        self.is_moving_down = False
-        self.is_moving_left = False
-        self.is_moving_right = False
+        self.id = id
 
         self.speed_x = 0
         self.speed_y = 0
 
+        self.should_remove = False
+
         # Main Attr
 
-        self.attr = Attributes(100, 5, 0.1, 10)
+        self.attr = attr
 
-    def custom_update(self, player):
 
+    def update_movement(self, player):
         # update sprite for player direction
 
         direction_x = self.center_x - player.center_x
@@ -47,6 +47,22 @@ class MobBase(arcade.Sprite):
 
         self.center_x += to_move_x
         self.center_y += to_move_y
+
+    def check_mob_damage_collisions(self, bullets):
+        for bullet in bullets:
+            if arcade.check_for_collision(self, bullet):
+                self.attr.set("health", self.attr.get("health") - bullet.attack_dmg)
+                if self.attr.get("health") <= 0:
+                    self.should_remove = True
+                    ssounds.play("mob_dead")
+
+    def custom_update(self, player):
+        self.check_mob_damage_collisions(player.bullets)
+        self.update_movement(player.sprite)
+
+
+
+
 
 
 

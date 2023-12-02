@@ -1,4 +1,5 @@
 import arcade
+import copy
 import time
 from helpers.Consts import *
 from helpers.Attributes import Attributes
@@ -43,7 +44,7 @@ class Player():
     def fire(self):
         if self.is_attacking and time.time() - self.last_attack_time > self.attr.get("fire_speed"):
             self. last_attack_time = time.time()
-            bullet = Bullet.Bullet((self.sprite.center_x, self.sprite.center_y), self.facing)
+            bullet = Bullet.Bullet((self.sprite.center_x, self.sprite.center_y), self.facing, self.attr.get("attack_dmg"))
             self.bullets.append(bullet)
 
     def check_bullets_to_remove(self):
@@ -62,10 +63,21 @@ class Player():
         if self.attr.get("health") <= 0:
             self.is_alive = False
 
+    def check_bullet_mobs_collisions(self, mobs):
+
+        for mob in mobs:
+            for bullet in self.bullets:
+                if arcade.check_for_collision(mob, bullet):
+                    mob.attr.set("health", mob.attr.get("health") - self.attr.get("attack_dmg"))
+                    bullet.should_remove = True
+                    #ssounds.play("mob_dead")
+                    print(mob.attr.get("health"), mob.id)
+
 
     def update(self, mobs):
 
         self.fire()
+        self.check_bullet_mobs_collisions(mobs)
 
         self.check_bullets_to_remove()
         self.check_player_damage_collisions(mobs)
