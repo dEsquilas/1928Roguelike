@@ -79,17 +79,21 @@ class Player():
                 powerup.should_remove = True
                 ssounds.play("powerup")
 
-    def update(self, mobs, powerups):
+    def bullets_update(self, walls):
+        for bullet in self.bullets:
+            bullet.custom_update(walls)
+
+    def update(self, room):
 
         self.fire()
-        self.check_bullet_mobs_collisions(mobs)
-        self.check_player_powerup_collisions(powerups)
+        self.check_bullet_mobs_collisions(room.mobs)
+        self.check_player_powerup_collisions(room.powerups)
 
         self.check_bullets_to_remove()
-        self.check_player_damage_collisions(mobs)
+        self.check_player_damage_collisions(room.mobs)
 
         self.sprite.update(self.is_moving, self.attr.get("speed"))
-        self.bullets.update()
+        self.bullets_update(room.walls)
 
         self.hp_hud.custom_update(self.current_hp)
 

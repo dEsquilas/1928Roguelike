@@ -64,7 +64,8 @@ class Game(arcade.Window):
             self.player.update_from_door(door)
 
         else:
-            self.player.update(self.room.mobs, self.room.powerups)
+            self.player.update(self.room)
+
         self.room.update(self.player)
 
         self.update_pyhsics_engines()

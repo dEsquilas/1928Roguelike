@@ -24,7 +24,10 @@ class Bullet(arcade.Sprite):
 
         ssounds.play("bullet")
 
-    def update(self):
+    def custom_update(self, walls):
+
+        super().update()
+
         self.center_x += self.speed * (self.direction[3] - self.direction[2])
         self.center_y += self.speed * (self.direction[0] - self.direction[1])
 
@@ -32,3 +35,9 @@ class Bullet(arcade.Sprite):
 
         if self.center_x < 0 or self.center_x > self.limits[0] or self.center_y < 0 or self.center_y > self.limits[1] or current_distance >= self.max_distance:
             self.should_remove = True
+
+        for wall in walls:
+            if arcade.check_for_collision(self, wall):
+                self.should_remove = True
+                break
+

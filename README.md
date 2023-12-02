@@ -28,4 +28,4 @@ To Do
 - [x] Set player on right position on door change
 - [ ] Add mobs pathfinding system
 - [x] Block mobs on walls or block items
-- [ ] Add block bullets on obstacles
+- [x] Add block bullets on obstacles and walls
