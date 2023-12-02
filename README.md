@@ -22,6 +22,7 @@ To Do
 - [x] Add basic hud with health
 - [ ] Add basic hud powerups
 - [ ] Add basic hud for current dmg, fire rate
+- [ ] Add basic hud for map
 - [x] Add refactor for set on each class each element
 - [ ] Improve door sprites
 - [x] Set player on right position on door change
