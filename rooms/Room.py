@@ -43,10 +43,11 @@ class Room():
         powerup = PowerUpBase((450, 200))
         self.powerups.append(powerup)
 
-        obstacle1 = BlockItem((100, 100))
-        obstacle2 = BlockItem((150, 100))
-        self.obstacles.append(obstacle1)
-        self.obstacles.append(obstacle2)
+        if id == 1:
+            obstacle1 = BlockItem((100, 100))
+            obstacle2 = BlockItem((150, 100))
+            self.obstacles.append(obstacle1)
+            self.obstacles.append(obstacle2)
 
         self.walls = self.get_walls()
 

@@ -27,5 +27,5 @@ To Do
 - [ ] Improve door sprites
 - [x] Set player on right position on door change
 - [ ] Add mobs pathfinding system
-- [ ] Block mobs on walls or block items
+- [x] Block mobs on walls or block items
 - [ ] Add block bullets on obstacles

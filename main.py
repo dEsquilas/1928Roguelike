@@ -12,9 +12,21 @@ class Game(arcade.Window):
         self.room = None
         self.rooms = []
         self.player = None
-        self.physics_engine = None
+        self.physics_player_engine = None
+        self.physics_mobs_engines = []
         self.current_room = 1
         self.sounds = {}
+
+    def set_physic_engines(self):
+        self.physics_player_engine = arcade.PhysicsEngineSimple(self.player.sprite, self.room.walls)
+        self.physics_mobs_engines = []
+        for mob in self.room.mobs:
+            self.physics_mobs_engines.append(arcade.PhysicsEngineSimple(mob, self.room.walls))
+
+    def update_pyhsics_engines(self):
+        self.physics_player_engine.update()
+        for engine in self.physics_mobs_engines:
+            engine.update()
 
     def setup(self):
 
@@ -24,7 +36,7 @@ class Game(arcade.Window):
 
         self.room = self.rooms[self.current_room]
         self.player = Player.Player()
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player.sprite, self.room.walls)
+        self.set_physic_engines()
 
         # limit framerate
 
@@ -48,13 +60,14 @@ class Game(arcade.Window):
                 if room.id == self.current_room:
                     self.room = room
                     break
+            self.set_physic_engines()
             self.player.update_from_door(door)
 
         else:
             self.player.update(self.room.mobs, self.room.powerups)
         self.room.update(self.player)
 
-        self.physics_engine.update()
+        self.update_pyhsics_engines()
 
         if not self.player.is_alive:
             arcade.close_window()
