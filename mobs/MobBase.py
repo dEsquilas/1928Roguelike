@@ -23,7 +23,6 @@ class MobBase(arcade.Sprite):
 
         self.attr = attr
 
-
     def update_movement(self, player):
         # update sprite for player direction
 
@@ -59,11 +58,3 @@ class MobBase(arcade.Sprite):
     def custom_update(self, player):
         self.check_mob_damage_collisions(player.bullets)
         self.update_movement(player.sprite)
-
-
-
-
-
-
-
-

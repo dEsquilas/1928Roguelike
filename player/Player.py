@@ -34,7 +34,6 @@ class Player():
             if self.is_moving[direction]:
                 self.facing = direction
 
-
         self.is_attacking = True if key == arcade.key.SPACE else self.is_attacking
 
     def on_key_release(self, key, modifiers):
@@ -72,8 +71,6 @@ class Player():
                 if arcade.check_for_collision(mob, bullet):
                     mob.attr.set("health", mob.attr.get("health") - self.attr.get("attack_dmg"))
                     bullet.should_remove = True
-                    #ssounds.play("mob_dead")
-                    print(mob.attr.get("health"), mob.id)
 
     def check_player_powerup_collisions(self, powerups):
         for powerup in powerups:

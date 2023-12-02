@@ -16,7 +16,6 @@ class HPHud(arcade.Sprite):
         super().update()
         self.current_hp = current_hp
 
-
     def draw(self):
         super().draw()
 

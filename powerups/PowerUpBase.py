@@ -1,7 +1,6 @@
 import arcade
 from helpers.Consts import *
 
-
 class PowerUpBase(arcade.Sprite):
     def __init__(self, position):
         super().__init__()
@@ -20,9 +19,7 @@ class PowerUpBase(arcade.Sprite):
         self.attr_modifier_type = 2
         self.attr_modifier_value = 0.5
 
-
     def apply_effect(self, player):
-        print("times")
         if self.attr_modifier_type == 1:
             player.attr.set(self.attr_modifier_id, player.attr.get(self.attr_modifier_id) + self.attr_modifier_value)
         elif self.attr_modifier_type == 2:

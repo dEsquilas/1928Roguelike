@@ -19,10 +19,6 @@ class PlayerSprite(arcade.Sprite):
         self.speed_x = 0
         self.speed_y = 0
 
-        # Main Attr
-
-
-
     def update(self, is_moving, speed):
 
         self.speed_x = 0
@@ -32,8 +28,6 @@ class PlayerSprite(arcade.Sprite):
         self.speed_x += -speed if is_moving[LEFT] else 0
         self.speed_y += speed if is_moving[UP] else 0
         self.speed_y += -speed if is_moving[DOWN] else 0
-
-        # print(self.speed_x, self.speed_y)
 
         self.center_x += self.speed_x
         self.center_y += self.speed_y
