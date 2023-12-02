@@ -65,6 +65,12 @@ class Room():
             if powerup.should_remove:
                 self.powerups.remove(powerup)
 
+    def is_player_on_door(self, player):
+        for id, door in enumerate(self.doors):
+            if arcade.check_for_collision(player.sprite, door):
+                return id + 1
+        return False
+
     def update(self, player):
         self.floor.update()
         self.mobs_update(player)

@@ -16,7 +16,12 @@ class Game(arcade.Window):
 
     def setup(self):
 
-        self.room = Room.Room("./assets/scenarios/default.tmx")
+        self.rooms = []
+        self.current_room = 1
+        self.rooms.append(Room.Room("./assets/scenarios/default.tmx"))
+        self.rooms.append(Room.Room("./assets/scenarios/default2.tmx"))
+
+        self.room = self.rooms[self.current_room]
         self.player = Player.Player()
         self.physics_engine = arcade.PhysicsEngineSimple(self.player.sprite, self.room.walls)
 
@@ -33,8 +38,19 @@ class Game(arcade.Window):
     def on_update(self, delta_time):
 
         # updates
-        self.player.update(self.room.mobs, self.room.powerups)
+
+        is_on_door = self.room.is_player_on_door(self.player)
+
+        if is_on_door:
+            self.current_room = 1 if self.current_room == 0 else 0
+            self.room = self.rooms[self.current_room]
+            self.player.sprite.center_x = WINDOW_WIDTH / 2
+            self.player.sprite.center_y = WINDOW_HEIGHT / 2
+
+        else:
+            self.player.update(self.room.mobs, self.room.powerups)
         self.room.update(self.player)
+
         self.physics_engine.update()
 
         if not self.player.is_alive:

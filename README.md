@@ -24,3 +24,4 @@ To Do
 - [ ] Add basic hud for current dmg, fire rate
 - [x] Add refactor for set on each class each element
 - [ ] Improve door sprites
+- [ ] Set player on right position on door change
