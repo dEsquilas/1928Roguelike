@@ -18,7 +18,7 @@ To Do
 - [ ] Generate random rooms
 - [ ] Generate random maps
 - [ ] Block bullets on walls
-- [ ] Add rocks to map
+- [x] Add block items to map
 - [x] Add basic hud with health
 - [ ] Add basic hud powerups
 - [ ] Add basic hud for current dmg, fire rate
@@ -26,3 +26,6 @@ To Do
 - [x] Add refactor for set on each class each element
 - [ ] Improve door sprites
 - [x] Set player on right position on door change
+- [ ] Add mobs pathfinding system
+- [ ] Block mobs on walls or block items
+- [ ] Add block bullets on obstacles

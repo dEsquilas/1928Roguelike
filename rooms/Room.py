@@ -5,6 +5,7 @@ from helpers.Consts import *
 from mobs.MobBase import MobBase
 from powerups.PowerUpBase import PowerUpBase
 from rooms.Door import Door
+from rooms.BlockItem import BlockItem
 
 class Room():
     def __init__(self, tile_file, id):
@@ -15,7 +16,6 @@ class Room():
         self.mobs = []
         self.pickups = arcade.SpriteList()
         self.powerups = arcade.SpriteList()
-        self.walls = self.get_walls()
         self.obstacles = arcade.SpriteList()
         self.doors = arcade.SpriteList()
         self.id = id
@@ -41,13 +41,23 @@ class Room():
         self.mobs.append(mobs2)
 
         powerup = PowerUpBase((450, 200))
-
         self.powerups.append(powerup)
+
+        obstacle1 = BlockItem((100, 100))
+        obstacle2 = BlockItem((150, 100))
+        self.obstacles.append(obstacle1)
+        self.obstacles.append(obstacle2)
+
+        self.walls = self.get_walls()
 
     def get_walls(self):
         walls = arcade.SpriteList()
         for sprite in self.floor.get_sprite_list("Walls"):
             walls.append(sprite)
+
+        for obstacles in self.obstacles:
+            walls.append(obstacles)
+
         return walls
 
     def mobs_update(self, player):
