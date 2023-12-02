@@ -1,9 +1,10 @@
 import copy
 import arcade
-from mobs.MobBase import MobBase
-from powerups.PowerUpBase import PowerUpBase
 from helpers.Attributes import Attributes
 from helpers.Consts import *
+from mobs.MobBase import MobBase
+from powerups.PowerUpBase import PowerUpBase
+from rooms.Door import Door
 
 class Room():
     def __init__(self, tile_file):
@@ -16,8 +17,19 @@ class Room():
         self.powerups = arcade.SpriteList()
         self.walls = self.get_walls()
         self.obstacles = arcade.SpriteList()
+        self.doors = arcade.SpriteList()
 
         # add elements
+
+        door1 = Door(1)
+        door2 = Door(2)
+        door3 = Door(3)
+        door4 = Door(4)
+
+        self.doors.append(door1)
+        self.doors.append(door2)
+        self.doors.append(door3)
+        self.doors.append(door4)
 
         attr = Attributes(100, 0.5, 0.1, 10)
 
@@ -60,6 +72,7 @@ class Room():
         self.powerups_update()
         self.walls.update()
         self.obstacles.update()
+        self.doors.update()
 
     def draw(self):
         self.floor.draw()
@@ -68,4 +81,5 @@ class Room():
         self.powerups.draw()
         self.walls.draw()
         self.obstacles.draw()
+        self.doors.draw()
 

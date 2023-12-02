@@ -11,7 +11,7 @@ To Do
 - [x] Add effect on powerups take
 - [x] Add effect on powerups movement
 - [ ] Add pickups hearts
-- [ ] Add doors sprites
+- [x] Add doors sprites
 - [ ] Add collisions on doors
 - [ ] Add lock doors
 - [ ] Add unlock doors
@@ -23,3 +23,4 @@ To Do
 - [ ] Add basic hud powerups
 - [ ] Add basic hud for current dmg, fire rate
 - [x] Add refactor for set on each class each element
+- [ ] Improve door sprites
