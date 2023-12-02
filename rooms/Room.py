@@ -48,6 +48,7 @@ class Room():
             mob.draw()
 
     def powerups_update(self):
+        self.powerups.update()
         for powerup in self.powerups:
             if powerup.should_remove:
                 self.powerups.remove(powerup)
