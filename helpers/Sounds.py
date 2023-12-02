@@ -10,7 +10,8 @@ class Sounds():
             ("mob_dead", "mp3"),
             ("ouch", "mp3"),
             ("pop", "wav"),
-            ("bullet", "wav")
+            ("bullet", "wav"),
+            ("powerup", "mp3")
         ]
 
         for sound in current_sounds:

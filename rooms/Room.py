@@ -1,7 +1,7 @@
 import copy
-
 import arcade
 from mobs.MobBase import MobBase
+from powerups.PowerUpBase import PowerUpBase
 from helpers.Attributes import Attributes
 from helpers.Consts import *
 
@@ -19,13 +19,17 @@ class Room():
 
         # add elements
 
-        attr = Attributes(100, 1, 0.1, 10)
+        attr = Attributes(100, 0.5, 0.1, 10)
 
         mobs1 = MobBase((250, 100), copy.deepcopy(attr), 1)
         mobs2 = MobBase((300, 150), copy.deepcopy(attr), 2)
 
         self.mobs.append(mobs1)
         self.mobs.append(mobs2)
+
+        powerup = PowerUpBase((450, 200))
+
+        self.powerups.append(powerup)
 
     def get_walls(self):
         walls = arcade.SpriteList()
@@ -35,7 +39,7 @@ class Room():
 
     def mobs_update(self, player):
         for mob in self.mobs:
-            mob.custom_update(player )
+            mob.custom_update(player)
             if mob.should_remove:
                 self.mobs.remove(mob)
 
@@ -43,11 +47,16 @@ class Room():
         for mob in self.mobs:
             mob.draw()
 
+    def powerups_update(self):
+        for powerup in self.powerups:
+            if powerup.should_remove:
+                self.powerups.remove(powerup)
+
     def update(self, player):
         self.floor.update()
         self.mobs_update(player)
         self.pickups.update()
-        self.powerups.update()
+        self.powerups_update()
         self.walls.update()
         self.obstacles.update()
 

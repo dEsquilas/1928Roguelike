@@ -2,7 +2,7 @@ import arcade
 from helpers.Consts import *
 
 
-class PowerUp1(arcade.Sprite):
+class PowerUpBase(arcade.Sprite):
     def __init__(self, position):
         super().__init__()
         self.texture = arcade.load_texture("./assets/sprites/powerup1.png")
@@ -14,17 +14,19 @@ class PowerUp1(arcade.Sprite):
         self.direction = 1
         self.origin_y = position[1] * TILE_SCALING
 
+        self.should_remove = False
 
         self.attr_modifier_id = "fire_speed"
         self.attr_modifier_type = 2
-        self.attr_modifier_value = 0.25
+        self.attr_modifier_value = 0.5
 
 
     def apply_effect(self, player):
+        print("times")
         if self.attr_modifier_type == 1:
-            player.attr[self.attr_modifier_id] += self.attr_modifier_value
+            player.attr.set(self.attr_modifier_id, player.attr.get(self.attr_modifier_id) + self.attr_modifier_value)
         elif self.attr_modifier_type == 2:
-            player.attr[self.attr_modifier_id] *= self.attr_modifier_value
+            player.attr.set(self.attr_modifier_id, player.attr.get(self.attr_modifier_id) * self.attr_modifier_value)
 
     def update(self):
 

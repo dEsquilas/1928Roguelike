@@ -18,7 +18,7 @@ class Player():
         self.last_hit_time = 0
         self.facing = UP
 
-        self.attr = Attributes(100, 5, 0.1, 10)
+        self.attr = Attributes(100, 5, 0.3, 10)
 
         self.current_hp = self.attr.get("health")
         self.hp_hud = HPHud.HPHud(self.current_hp, self.attr.get("health"))
@@ -75,11 +75,19 @@ class Player():
                     #ssounds.play("mob_dead")
                     print(mob.attr.get("health"), mob.id)
 
+    def check_player_powerup_collisions(self, powerups):
+        for powerup in powerups:
+            if arcade.check_for_collision(self.sprite, powerup):
+                powerup.apply_effect(self)
+                powerup.should_remove = True
+                ssounds.play("powerup")
 
-    def update(self, mobs):
+
+    def update(self, mobs, powerups):
 
         self.fire()
         self.check_bullet_mobs_collisions(mobs)
+        self.check_player_powerup_collisions(powerups)
 
         self.check_bullets_to_remove()
         self.check_player_damage_collisions(mobs)

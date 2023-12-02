@@ -41,8 +41,8 @@ class Game(arcade.Window):
     def on_update(self, delta_time):
 
         # updates
+        self.player.update(self.room.mobs, self.room.powerups)
         self.room.update(self.player)
-        self.player.update(self.room.mobs)
         self.physics_engine.update()
 
         if not self.player.is_alive:
@@ -52,6 +52,7 @@ class Game(arcade.Window):
         self.clear()
         self.room.draw()
         self.player.draw()
+
 
 
 
