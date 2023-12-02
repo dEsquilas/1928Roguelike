@@ -4,7 +4,7 @@ import time
 from helpers.Consts import *
 from helpers.Attributes import Attributes
 from helpers.Sounds import ssounds
-from player import PlayerSprite, Bullet
+from player import PlayerSprite, Bullet, HPHud
 
 class Player():
     def __init__(self):
@@ -19,6 +19,9 @@ class Player():
         self.facing = UP
 
         self.attr = Attributes(100, 5, 0.1, 10)
+
+        self.current_hp = self.attr.get("health")
+        self.hp_hud = HPHud.HPHud(self.current_hp, self.attr.get("health"))
 
         self.is_moving = {}
         for direction in DIRECTIONS:
@@ -55,12 +58,11 @@ class Player():
     def check_player_damage_collisions(self, mobs):
         for mob in mobs:
             if arcade.check_for_collision(self.sprite, mob) and time.time() - self.last_hit_time > IFRAMES:
-                self.attr.set("health", self.attr.get("health") - mob.attr.get("attack_dmg"))
+                self.current_hp -= mob.attr.get("attack_dmg")
                 self.last_hit_time = time.time()
                 ssounds.play("ouch")
-                print(self.attr.get("health"))
 
-        if self.attr.get("health") <= 0:
+        if self.current_hp <= 0:
             self.is_alive = False
 
     def check_bullet_mobs_collisions(self, mobs):
@@ -85,9 +87,12 @@ class Player():
         self.sprite.update(self.is_moving, self.attr.get("speed"))
         self.bullets.update()
 
+        self.hp_hud.custom_update(self.current_hp)
+
     def draw(self):
         self.bullets.draw()
         self.sprite.draw()
+        self.hp_hud.draw()
 
 
 
