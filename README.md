@@ -17,7 +17,7 @@ To Do
 - [ ] Add unlock doors
 - [ ] Generate random rooms
 - [ ] Generate random maps
-- [ ] Block bullets on walls
+- [x] Block bullets on walls
 - [x] Add block items to map
 - [x] Add basic hud with health
 - [ ] Add basic hud powerups
