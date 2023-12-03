@@ -18,6 +18,7 @@ class Game(arcade.Window):
         self.sounds = {}
 
     def set_physic_engines(self):
+        self.room.set_walls()
         self.physics_player_engine = arcade.PhysicsEngineSimple(self.player.sprite, self.room.walls)
         self.physics_mobs_engines = []
         for mob in self.room.mobs:
@@ -51,6 +52,9 @@ class Game(arcade.Window):
     def on_update(self, delta_time):
 
         # updates
+
+        if self.room.is_physic_engine_changed():
+            self.set_physic_engines()
 
         door = self.room.is_player_on_door(self.player)
 

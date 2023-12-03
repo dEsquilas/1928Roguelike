@@ -20,6 +20,8 @@ class Room():
         self.obstacles = arcade.SpriteList()
         self.doors = arcade.SpriteList()
         self.id = id
+        self.is_opened = 0
+        self.physics_engine_changed = False
 
         # add elements
 
@@ -53,6 +55,7 @@ class Room():
             pickup1 = Heart.Heart((200, 100))
             self.pickups.append(pickup1)
 
+    def set_walls(self):
         self.walls = self.get_walls()
 
     def get_walls(self):
@@ -63,6 +66,11 @@ class Room():
         for obstacles in self.obstacles:
             walls.append(obstacles)
 
+        if self.is_opened == 0:
+            for door in self.doors:
+                if door.status == 0:
+                    walls.append(door)
+
         return walls
 
     def mobs_update(self, player):
@@ -70,6 +78,10 @@ class Room():
             mob.custom_update(player)
             if mob.should_remove:
                 self.mobs.remove(mob)
+
+        if len(self.mobs) == 0 and self.is_opened == 0:
+            self.is_opened = 1
+            self.unlock_doors()
 
     def mobs_draw(self):
         for mob in self.mobs:
@@ -91,6 +103,26 @@ class Room():
         for id, door in enumerate(self.doors):
             if arcade.check_for_collision(player.sprite, door):
                 return door
+        return False
+
+    def unlock_doors(self):
+        for door in self.doors:
+            door.unlock()
+        self.is_opened = 1
+        self.physics_engine_changed = True
+
+    def lock_doors(self):
+        for door in self.doors:
+            door.lock()
+        self.is_opened = 0
+        self.physics_engine_changed = True
+
+    def is_physic_engine_changed(self):
+
+        if self.physics_engine_changed:
+            self.physics_engine_changed = False
+            return True
+
         return False
 
     def update(self, player):

@@ -8,6 +8,8 @@ class Sounds():
         current_sounds = [
             ("bullet", "wav"),
             ("crash", "mp3"),
+            ("door_close", "mp3"),
+            ("door_open", "mp3"),
             ("glup", "mp3"),
             ("mob_dead", "mp3"),
             ("ouch", "mp3"),
