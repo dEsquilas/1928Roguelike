@@ -10,18 +10,18 @@
     "fileStates": {
         "default.tmx": {
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 393.9999999999999,
-                "y": 196
+                "x": 392.66666666666663,
+                "y": 194.66666666666669
             }
         },
         "default2.tmx": {
             "scale": 4.129861111111111,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 271.92197746763077,
-                "y": 143.83050277450815
+                "y": 143.1040860938288
             }
         },
         "tilesets/Walls.tsx": {
